@@ -48,6 +48,9 @@ class AkilliKilerApp extends StatelessWidget {
           style: ButtonStyle(
             foregroundColor: WidgetStateProperty.all(AppColors.buttonPrimary),
           ),
+        ),
+        iconTheme: IconThemeData(
+          color: AppColors.iconDefault,
         )
       ),
 
