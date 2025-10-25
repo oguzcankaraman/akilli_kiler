@@ -16,7 +16,7 @@ class AkilliKilerApp extends StatelessWidget {
       title: 'Akıllı Kiler',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0x000F0000)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF4C0F00)),
         useMaterial3: true,
       ),
       home: const CellarListScreen(),

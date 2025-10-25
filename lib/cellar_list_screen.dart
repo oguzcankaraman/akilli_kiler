@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:akilli_kiler/add_product_screen.dart';
+import 'package:akilli_kiler/pantry_item.dart';
 
 class CellarListScreen extends StatefulWidget {
   const CellarListScreen({super.key});
@@ -9,12 +10,9 @@ class CellarListScreen extends StatefulWidget {
 }
 
 class CellarListScreenState extends State<CellarListScreen> {
-  final List<Map> products = [
-    {'item': 'Elma', 'date': '17/11/2025'},
-    {'item': 'Yumurta', 'date': '17/11/2025'},
-    {'item': 'Süt', 'date': '17/11/2025'}];
+  final List<PantryItem> products = [];
 
-  void addProduct(Map newProduct) {
+  void addProduct(PantryItem newProduct) {
     setState(() {
       products.add(newProduct);
     });
@@ -34,8 +32,8 @@ class CellarListScreenState extends State<CellarListScreen> {
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Icon(Icons.fastfood),
-                  title: Text(products[index]['item']),
-                  trailing: Text('SKT: ${products[index]['date']}'),
+                  title: Text(products[index].name),
+                  trailing: Text('${products[index].expiryDate.difference(DateTime.now()).inDays} gün içinde tüketmelisiniz'),
                 );
               },
             )

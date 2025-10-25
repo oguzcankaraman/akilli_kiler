@@ -1,8 +1,8 @@
+import 'package:akilli_kiler/pantry_item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AddProductScreen extends StatefulWidget {
-  final Function(Map) addProduct;
+  final Function(PantryItem) addProduct;
   const AddProductScreen({super.key,required this.addProduct});
 
   @override
@@ -12,17 +12,16 @@ class AddProductScreen extends StatefulWidget {
 class _AddProductScreenState extends State<AddProductScreen> {
   final controller = TextEditingController();
 
-  Future<DateTime>? selectedDate;
+  DateTime? selectedDate;
 
-  void setSelectedDate(Future<DateTime>? date) {
+  void setSelectedDate(DateTime? date) {
     setState(() {
       selectedDate = date;
     });
   }
 
-  String? getSelectedDate() {
-    return DateFormat('dd/MM/yyyy')
-        .format(DateTime.now().add(const Duration(days: 7)));
+  DateTime? getSelectedDate() {
+    return selectedDate;
   }
 
   @override
@@ -51,16 +50,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
               ElevatedButton(
                 style: const ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Color(0xFFA5D6A7))
+                    backgroundColor: WidgetStatePropertyAll(Color(0xFFA5D6A7))
                 ),
-                onPressed: () {
-                  Future<DateTime>? selectedDate = showDatePicker(
+                onPressed: () async {
+                  final DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2023),
                     lastDate: DateTime(2030),
-                  ) as Future<DateTime>?;
-                  setSelectedDate(selectedDate);
+                  );
+
+                  if (pickedDate != null) {
+                    setSelectedDate(pickedDate);
+                  }
                 },
                 child: SizedBox(
                   width: 220,
@@ -72,7 +74,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Text(
                         getSelectedDate() == null
                             ? 'Son Kullanma Tarihi Seçiniz'
-                            : '${getSelectedDate()}',
+                            : '${getSelectedDate()!.day}/${getSelectedDate()!.month}/${getSelectedDate()!.year}',
                       ),
                     ],
                   ),
@@ -84,11 +86,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                   onPressed: () {
                     final String productName = controller.text;
+                    final DateTime? selectedDate = getSelectedDate();
+                    late DateTime expiryDate;
                     if (productName.isNotEmpty) {
-                      final newProduct = {
-                        'item': productName,
-                        'date': getSelectedDate(),
-                      };
+                      if (selectedDate == null) {
+                        expiryDate = DateTime.now().add(const Duration(days: 7));
+                      }
+                      else {
+                        expiryDate = selectedDate;
+                      }
+                      final newProduct = PantryItem(
+                        name: productName,
+                        expiryDate: expiryDate
+                      );
                       widget.addProduct(newProduct);
                     }
                     Navigator.pop(context);
