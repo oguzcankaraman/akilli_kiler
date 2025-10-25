@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:akilli_kiler/add_product_screen.dart';
 
-class KilerListesiEkrani extends StatefulWidget {
-  const KilerListesiEkrani({super.key});
+class CellarListScreen extends StatefulWidget {
+  const CellarListScreen({super.key});
 
   @override
-  State<KilerListesiEkrani> createState() => _KilerListesiEkraniState();
+  State<CellarListScreen> createState() => CellarListScreenState();
 }
 
-class _KilerListesiEkraniState extends State<KilerListesiEkrani> {
+class CellarListScreenState extends State<CellarListScreen> {
   final List<Map> urunler = [
     {'item': 'Elma', 'date': '17/11/2025'},
     {'item': 'Yumurta', 'date': '17/11/2025'},

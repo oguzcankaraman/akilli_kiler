@@ -19,7 +19,7 @@ class AkilliKilerApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0x000F0000)),
         useMaterial3: true,
       ),
-      home: const KilerListesiEkrani(),
+      home: const CellarListScreen(),
 
     );
   }
