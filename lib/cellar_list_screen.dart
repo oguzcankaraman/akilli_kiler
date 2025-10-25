@@ -28,14 +28,14 @@ class CellarListScreenState extends State<CellarListScreen> {
         title: const Text('Kilerim'),
         backgroundColor: Colors.green[100],
       ),
-      body: urunler.isNotEmpty
+      body: products.isNotEmpty
           ? ListView.builder(
-              itemCount: urunler.length,
+              itemCount: products.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Icon(Icons.fastfood),
-                  title: Text(urunler[index]['item']),
-                  trailing: Text('SKT: ${urunler[index]['date']}'),
+                  title: Text(products[index]['item']),
+                  trailing: Text('SKT: ${products[index]['date']}'),
                 );
               },
             )
