@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:akilli_kiler/add_product_screen.dart';
+
+class KilerListesiEkrani extends StatefulWidget {
+  const KilerListesiEkrani({super.key});
+
+  @override
+  State<KilerListesiEkrani> createState() => _KilerListesiEkraniState();
+}
+
+class _KilerListesiEkraniState extends State<KilerListesiEkrani> {
+  final List<Map> urunler = [
+    {'item': 'Elma', 'date': '17/11/2025'},
+    {'item': 'Yumurta', 'date': '17/11/2025'},
+    {'item': 'Süt', 'date': '17/11/2025'}];
+
+  void urunEkle(Map yeniUrun) {
+    setState(() {
+      urunler.add(yeniUrun);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Scaffold, bir ekranın temel görsel yapısını (başlık çubuğu, gövde vb.) sağlar.
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Kilerim'),
+        backgroundColor: Colors.green[100],
+      ),
+      body: urunler.isNotEmpty
+          ? ListView.builder(
+              itemCount: urunler.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Icon(Icons.fastfood),
+                  title: Text(urunler[index]['item']),
+                  trailing: Text('SKT: ${urunler[index]['date']}'),
+                );
+              },
+            )
+          : Center(
+              child: Text(
+                'Kileriniz boş. Ürün eklemek için "+" butonuna tıklayın.',
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProductScreen(urunEkle: urunEkle)),
+          );
+        },
+        backgroundColor: Colors.green[200],
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
