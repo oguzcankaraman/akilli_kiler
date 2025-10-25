@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:akilli_kiler/add_product_screen.dart';
 import 'package:akilli_kiler/pantry_item.dart';
 
+import 'constants/app_color.dart';
+
 class CellarListScreen extends StatefulWidget {
   const CellarListScreen({super.key});
 
@@ -24,23 +26,48 @@ class CellarListScreenState extends State<CellarListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kilerim'),
-        backgroundColor: Colors.green[100],
+          backgroundColor: AppColors.primary
       ),
       body: products.isNotEmpty
           ? ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Icon(Icons.fastfood),
-                  title: Text(products[index].name),
-                  trailing: Text('${products[index].expiryDate.difference(DateTime.now()).inDays} gün içinde tüketmelisiniz'),
+                return Card(
+                  child: ListTile(
+                    leading: Icon(Icons.fastfood),
+                    title: Text(products[index].name),
+                    trailing: Builder(builder: (context){
+                      final daysLeft = products[index].expiryDate.difference(DateTime.now()).inDays;
+                      String message;
+                      Color textColor;
+
+                      if (daysLeft < 0) {
+                        message = 'Süresi doldu';
+                        textColor = Color(0xFFD50000);
+                      } else if (daysLeft == 0) {
+                        message = 'Son gün';
+                        textColor = Colors.red;
+                      } else if (daysLeft <= 3) {
+                        message = '$daysLeft gün sonra tarihi doluyor';
+                        textColor = Color(0xFFFF8A65);
+
+                      }else {
+                        message = '$daysLeft gün içinde tüketmelisiniz';
+                        textColor = Colors.green;
+                      }
+
+                      return Text(
+                        message,
+                        style: TextStyle(color: textColor),
+                      );
+                    }),
+                  ),
                 );
               },
             )
           : Center(
               child: Text(
                 'Kileriniz boş. Ürün eklemek için "+" butonuna tıklayın.',
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -51,8 +78,8 @@ class CellarListScreenState extends State<CellarListScreen> {
             MaterialPageRoute(builder: (context) => AddProductScreen(addProduct: addProduct)),
           );
         },
-        backgroundColor: Colors.green[200],
         child: const Icon(Icons.add),
+
       ),
     );
   }
