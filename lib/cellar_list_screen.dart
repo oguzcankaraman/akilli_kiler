@@ -9,14 +9,14 @@ class CellarListScreen extends StatefulWidget {
 }
 
 class CellarListScreenState extends State<CellarListScreen> {
-  final List<Map> urunler = [
+  final List<Map> products = [
     {'item': 'Elma', 'date': '17/11/2025'},
     {'item': 'Yumurta', 'date': '17/11/2025'},
     {'item': 'Süt', 'date': '17/11/2025'}];
 
-  void urunEkle(Map yeniUrun) {
+  void addProduct(Map newProduct) {
     setState(() {
-      urunler.add(yeniUrun);
+      products.add(newProduct);
     });
   }
 
@@ -50,7 +50,7 @@ class CellarListScreenState extends State<CellarListScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddProductScreen(urunEkle: urunEkle)),
+            MaterialPageRoute(builder: (context) => AddProductScreen(addProduct: addProduct)),
           );
         },
         backgroundColor: Colors.green[200],

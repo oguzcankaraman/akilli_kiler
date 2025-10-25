@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddProductScreen extends StatefulWidget {
-  final Function(Map) urunEkle;
-  const AddProductScreen({super.key,required this.urunEkle});
+  final Function(Map) addProduct;
+  const AddProductScreen({super.key,required this.addProduct});
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
