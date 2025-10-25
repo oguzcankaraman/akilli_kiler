@@ -43,11 +43,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   onPressed: () {
                     final String urunAdi = controller.text;
                     if (urunAdi.isNotEmpty) {
-                      final yeniUrun = {
+                      final newProduct = {
                         'item': urunAdi,
                         'date': '17/11/2025' // Sabit tarih
                       };
-                      widget.urunEkle(yeniUrun);
+                      widget.addProduct(newProduct);
                     }
                     Navigator.pop(context);
                   },
