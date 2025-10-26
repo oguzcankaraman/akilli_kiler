@@ -1,7 +1,7 @@
-import 'package:akilli_kiler/pantry_item.dart';
+import 'package:akilli_kiler/helpers/pantry_item.dart';
 import 'package:flutter/material.dart';
 
-import 'constants/app_color.dart';
+import '../constants/app_color.dart';
 
 class AddProductScreen extends StatefulWidget {
   final Function(PantryItem) addProduct;

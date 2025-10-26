@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:akilli_kiler/cellar_list_screen.dart';
+import 'package:akilli_kiler/screens/cellar_list_screen.dart';
 import 'package:akilli_kiler/constants/app_color.dart';
 
 // Her Flutter uygulaması bu main() fonksiyonundan başlar.
