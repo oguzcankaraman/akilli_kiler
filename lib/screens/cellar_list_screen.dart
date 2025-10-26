@@ -54,9 +54,17 @@ class CellarListScreenState extends State<CellarListScreen> {
               itemBuilder: (context, index) {
                 return Dismissible(
                   key: Key(products[index].id.toString()),
-                  direction: DismissDirection.endToStart,
                   background: Container(
-                    color: Colors.red,
+                    color: Colors.red[400],
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.red[400],
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: const Icon(
@@ -64,6 +72,27 @@ class CellarListScreenState extends State<CellarListScreen> {
                       color: Colors.white,
                     ),
                   ),
+                  confirmDismiss: (direction) async {
+                    return await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("Onay"),
+                          content: const Text("Bu ürünü silmek istediğinizden emin misiniz?"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false), // Silme
+                              child: const Text("İPTAL"),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true), // Sil
+                              child: const Text("SİL"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
                   onDismissed: (direction) {
                     _deleteProduct(products[index].id!);
                   },
