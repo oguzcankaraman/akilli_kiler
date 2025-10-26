@@ -78,13 +78,19 @@ class CellarListScreenState extends State<CellarListScreen> {
                     color: AppColors.error,
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(Icons.delete, color: AppColors.background),
+                    child: const Icon(
+                      Icons.delete,
+                      color: AppColors.background,
+                    ),
                   ),
                   secondaryBackground: Container(
                     color: AppColors.error,
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(Icons.delete, color: AppColors.background),
+                    child: const Icon(
+                      Icons.delete,
+                      color: AppColors.background,
+                    ),
                   ),
                   confirmDismiss: (direction) async {
                     return await showDialog(
@@ -106,8 +112,8 @@ class CellarListScreenState extends State<CellarListScreen> {
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(true),
                               child: const Text(
-                                  "SİL",
-                                  style: TextStyle(color: AppColors.error),
+                                "SİL",
+                                style: TextStyle(color: AppColors.error),
                               ),
                             ),
                           ],
@@ -144,9 +150,27 @@ class CellarListScreenState extends State<CellarListScreen> {
                             textColor = Colors.green;
                           }
 
-                          return Text(
-                            message,
-                            style: TextStyle(color: textColor),
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(message, style: TextStyle(color: textColor)),
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddProductScreen(
+                                        addProduct: addProduct,
+                                        productToEdit: products[index],
+                                        loadProducts: _loadProducts,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                            ],
                           );
                         },
                       ),

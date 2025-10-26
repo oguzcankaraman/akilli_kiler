@@ -61,4 +61,14 @@ class DatabaseService {
       whereArgs: [id],
     );
   }
+
+  Future<void> updatePantryItem(PantryItem pantryItem) async {
+    final database = await db;
+    await database.update(
+      _pantryItemsTableName,
+      pantryItem.toMap(),
+      where: '$_pantryItemIdColumnName = ?',
+      whereArgs: [pantryItem.id],
+    );
+  }
 }

@@ -1,12 +1,14 @@
 import 'package:akilli_kiler/helpers/pantry_item.dart';
 import 'package:flutter/material.dart';
-
+import '../services/database_service.dart';
 import '../constants/app_color.dart';
 
 class AddProductScreen extends StatefulWidget {
   final Function(PantryItem) addProduct;
+  final PantryItem? productToEdit;
+  final Function()? loadProducts;
 
-  const AddProductScreen({super.key, required this.addProduct});
+  const AddProductScreen({super.key, required this.addProduct, this.productToEdit, this.loadProducts});
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
@@ -14,6 +16,7 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   final controller = TextEditingController();
+  final DatabaseService _dbService = DatabaseService.instance;
 
   DateTime? selectedDate;
 
@@ -25,6 +28,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   DateTime? getSelectedDate() {
     return selectedDate;
+  }
+
+  void updateProduct(PantryItem productToEdit) async {
+    _dbService.updatePantryItem(productToEdit);
+    widget.loadProducts!();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.productToEdit != null) {
+      controller.text = widget.productToEdit!.name;
+      selectedDate = widget.productToEdit!.expiryDate;
+    }
   }
 
   @override
@@ -99,16 +116,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   final DateTime? selectedDate = getSelectedDate();
                   late DateTime expiryDate;
                   if (productName.isNotEmpty) {
-                    if (selectedDate == null) {
-                      expiryDate = DateTime.now().add(const Duration(days: 7));
-                    } else {
-                      expiryDate = selectedDate;
-                    }
-                    final newProduct = PantryItem(
-                      name: productName,
-                      expiryDate: expiryDate,
-                    );
-                    widget.addProduct(newProduct);
+                      if (selectedDate == null) {
+                        expiryDate = DateTime.now().add(const Duration(days: 7));
+                      } else {
+                        expiryDate = selectedDate;
+                      }
+                      final newProduct = PantryItem(
+                        name: productName,
+                        expiryDate: expiryDate,
+                      );
+                      if (widget.productToEdit != null) {
+                        // Mevcut ürünün güncellenmesi
+                        final updatedProduct = PantryItem(
+                          id: widget.productToEdit!.id,
+                          name: productName,
+                          expiryDate: expiryDate,
+                        );
+                        updateProduct(updatedProduct);
+                      } else {
+                        widget.addProduct(newProduct);
+                      }
                   }
                   Navigator.pop(context);
                 },

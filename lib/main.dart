@@ -33,25 +33,34 @@ class AkilliKilerApp extends StatelessWidget {
             if (states.contains(WidgetState.selected)) {
               return AppColors.textPrimary;
             }
+            if (states.contains(WidgetState.disabled)) {
+              return AppColors.textPrimary;
+            }
             return AppColors.textPrimary;
           }),
+          yearForegroundColor: WidgetStateProperty.all(AppColors.textPrimary),
           dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return AppColors.buttonPrimary;
             }
-            return null;
+            return Colors.transparent;
           }),
-          todayBackgroundColor: WidgetStateProperty.all(AppColors.secondary),
+          todayBackgroundColor: WidgetStateProperty.all(AppColors.primary),
           todayForegroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+          cancelButtonStyle: ButtonStyle(
+            foregroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+          ),
+          confirmButtonStyle: ButtonStyle(
+            foregroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+          ),
         ),
+
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             foregroundColor: WidgetStateProperty.all(AppColors.buttonPrimary),
           ),
         ),
-        iconTheme: IconThemeData(
-          color: AppColors.iconDefault,
-        )
+        iconTheme: IconThemeData(color: AppColors.iconDefault),
       ),
 
       home: const CellarListScreen(),
