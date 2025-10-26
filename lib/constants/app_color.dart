@@ -17,4 +17,8 @@ class AppColors {
 
   // İkon renkleri
   static const Color iconDefault = Colors.black54;
+
+  // Uyarı renkleri
+  static const Color warning = Color(0xFFFFC107);
+  static const Color error = Color(0xFFF44336);
 }

@@ -4,7 +4,6 @@ import 'package:akilli_kiler/helpers/pantry_item.dart';
 import '../constants/app_color.dart';
 import '../services/database_service.dart';
 
-
 class CellarListScreen extends StatefulWidget {
   const CellarListScreen({super.key});
 
@@ -15,6 +14,7 @@ class CellarListScreen extends StatefulWidget {
 class CellarListScreenState extends State<CellarListScreen> {
   final List<PantryItem> products = [];
   final DatabaseService _dbService = DatabaseService.instance;
+  late bool _isAscending = true;
 
   @override
   void initState() {
@@ -27,11 +27,12 @@ class CellarListScreenState extends State<CellarListScreen> {
     setState(() {
       products.clear();
       products.addAll(loadedProducts);
+      _sortProducts();
     });
   }
 
   void addProduct(PantryItem newProduct) async {
-    _dbService.addPantryItem(newProduct);
+    await _dbService.addPantryItem(newProduct);
     await _loadProducts();
   }
 
@@ -40,13 +41,32 @@ class CellarListScreenState extends State<CellarListScreen> {
     await _loadProducts();
   }
 
+  void _sortProducts() {
+    setState(() {
+      products.sort(
+        (a, b) => _isAscending
+            ? a.expiryDate.compareTo(b.expiryDate)
+            : b.expiryDate.compareTo(a.expiryDate),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // Scaffold, bir ekranın temel görsel yapısını (başlık çubuğu, gövde vb.) sağlar.
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kilerim'),
+        title: const Text('Dolabım'),
         backgroundColor: AppColors.primary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.sort),
+            onPressed: () {
+              _isAscending = !_isAscending;
+              _sortProducts();
+            },
+          ),
+        ],
       ),
       body: products.isNotEmpty
           ? ListView.builder(
@@ -55,22 +75,16 @@ class CellarListScreenState extends State<CellarListScreen> {
                 return Dismissible(
                   key: Key(products[index].id.toString()),
                   background: Container(
-                    color: Colors.red[400],
+                    color: AppColors.error,
                     alignment: Alignment.centerLeft,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.delete, color: AppColors.background),
                   ),
                   secondaryBackground: Container(
-                    color: Colors.red[400],
+                    color: AppColors.error,
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.delete, color: AppColors.background),
                   ),
                   confirmDismiss: (direction) async {
                     return await showDialog(
@@ -78,15 +92,23 @@ class CellarListScreenState extends State<CellarListScreen> {
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text("Onay"),
-                          content: const Text("Bu ürünü silmek istediğinizden emin misiniz?"),
+                          content: const Text(
+                            "Bu ürünü silmek istediğinizden emin misiniz?",
+                          ),
                           actions: <Widget>[
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(false), // Silme
-                              child: const Text("İPTAL"),
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text(
+                                "İPTAL",
+                                style: TextStyle(color: AppColors.textPrimary),
+                              ),
                             ),
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(true), // Sil
-                              child: const Text("SİL"),
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text(
+                                  "SİL",
+                                  style: TextStyle(color: AppColors.error),
+                              ),
                             ),
                           ],
                         );
