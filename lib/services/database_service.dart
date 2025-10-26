@@ -52,4 +52,13 @@ class DatabaseService {
     final data = await database.query(_pantryItemsTableName);
     return data.map((item) => PantryItem.fromMap(item)).toList();
   }
+
+  Future<void> deletePantryItem(int id) async {
+    final database = await db;
+    await database.delete(
+      _pantryItemsTableName,
+      where: '$_pantryItemIdColumnName = ?',
+      whereArgs: [id],
+    );
+  }
 }

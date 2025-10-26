@@ -35,6 +35,11 @@ class CellarListScreenState extends State<CellarListScreen> {
     await _loadProducts();
   }
 
+  Future<void> _deleteProduct(int id) async {
+    await _dbService.deletePantryItem(id);
+    await _loadProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Scaffold, bir ekranın temel görsel yapısını (başlık çubuğu, gövde vb.) sağlar.
@@ -47,37 +52,53 @@ class CellarListScreenState extends State<CellarListScreen> {
           ? ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    leading: Icon(Icons.fastfood),
-                    title: Text(products[index].name),
-                    trailing: Builder(
-                      builder: (context) {
-                        final daysLeft = products[index].expiryDate
-                            .difference(DateTime.now())
-                            .inDays;
-                        String message;
-                        Color textColor;
+                return Dismissible(
+                  key: Key(products[index].id.toString()),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    _deleteProduct(products[index].id!);
+                  },
+                  child: Card(
+                    child: ListTile(
+                      leading: Icon(Icons.fastfood),
+                      title: Text(products[index].name),
+                      trailing: Builder(
+                        builder: (context) {
+                          final daysLeft = products[index].expiryDate
+                              .difference(DateTime.now())
+                              .inDays;
+                          String message;
+                          Color textColor;
 
-                        if (daysLeft < 0) {
-                          message = 'Süresi doldu';
-                          textColor = Color(0xFFD50000);
-                        } else if (daysLeft == 0) {
-                          message = 'Son gün';
-                          textColor = Colors.red;
-                        } else if (daysLeft <= 3) {
-                          message = '$daysLeft gün sonra tarihi doluyor';
-                          textColor = Color(0xFFFF8A65);
-                        } else {
-                          message = '$daysLeft gün içinde tüketmelisiniz';
-                          textColor = Colors.green;
-                        }
+                          if (daysLeft < 0) {
+                            message = 'Süresi doldu';
+                            textColor = Color(0xFFD50000);
+                          } else if (daysLeft == 0) {
+                            message = 'Son gün';
+                            textColor = Colors.red;
+                          } else if (daysLeft <= 3) {
+                            message = '$daysLeft gün sonra tarihi doluyor';
+                            textColor = Color(0xFFFF8A65);
+                          } else {
+                            message = '$daysLeft gün içinde tüketmelisiniz';
+                            textColor = Colors.green;
+                          }
 
-                        return Text(
-                          message,
-                          style: TextStyle(color: textColor),
-                        );
-                      },
+                          return Text(
+                            message,
+                            style: TextStyle(color: textColor),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );
