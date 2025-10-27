@@ -37,11 +37,11 @@ You need to have Flutter installed on your system. You can find instructions [he
 
 1.  Clone the repo
     ```sh
-    git clone [https://github.com/your_username/your_repository_name.git](https://github.com/your_username/your_repository_name.git)
+    git clone [https://github.com/oguzcankaraman/your_repository_name.git](https://github.com/your_username/your_repository_name.git)
     ```
 2.  Navigate to the project directory
     ```sh
-    cd your_repository_name
+    cd akilli_kilername
     ```
 3.  Install dependencies
     ```sh
