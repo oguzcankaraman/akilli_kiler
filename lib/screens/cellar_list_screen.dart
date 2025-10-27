@@ -168,7 +168,10 @@ class CellarListScreenState extends State<CellarListScreen> {
                                     ),
                                   );
                                 },
-                                icon: Icon(Icons.edit),
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: AppColors.iconDefault,
+                                ),
                               ),
                             ],
                           );

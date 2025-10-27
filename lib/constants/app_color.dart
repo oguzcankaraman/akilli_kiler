@@ -16,7 +16,7 @@ class AppColors {
   static const Color textSecondary = Colors.black54;
 
   // İkon renkleri
-  static const Color iconDefault = Colors.black54;
+  static const Color iconDefault = Colors.black45;
 
   // Uyarı renkleri
   static const Color warning = Color(0xFFFFC107);
